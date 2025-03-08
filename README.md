@@ -1,114 +1,282 @@
-# 🎧 Funnelchat: Audio to Text Converter API
+# Convertidor de Audio a Texto con Inteligencia Artificial
 
-## 📋 Descripción
-**Funnelchat Audio to Text Converter** es un servicio basado en FastAPI que convierte archivos de audio en texto utilizando el modelo **Whisper** de OpenAI. Permite subir archivos de audio y obtener la transcripción en formato JSON. Además, está listo para integrarse en proyectos frontend con soporte CORS para solicitudes desde cualquier origen.
+## 📝 Descripción
 
-## 🚀 Funcionalidades
-- 🎙️ **Conversión de Audio a Texto**: Sube un archivo de audio y obtén su transcripción en texto utilizando la IA de OpenAI.
-- 🔒 **Soporte CORS**: Permite hacer solicitudes desde cualquier frontend (Angular, React, Vue, etc.).
-- 🧑‍💻 **Integración con Postman**: Colección de ejemplos listos para probar con Postman.
-- 🔐 **Variables de Entorno**: Las claves de API y configuraciones sensibles se manejan de manera segura mediante archivos de entorno (`.env`).
+Este proyecto es una API desarrollada con FastAPI que permite convertir archivos de audio a texto utilizando el modelo Whisper de OpenAI. Esta herramienta es ideal para transcripciones automáticas de grabaciones, notas de voz, entrevistas o cualquier contenido de audio que necesites transformar en texto.
 
-## 🛠️ Tecnologías Utilizadas
-- **FastAPI**: Framework web para crear APIs de alto rendimiento.
-- **OpenAI Whisper**: Modelo de IA para la transcripción de audio a texto.
-- **Mangum**: Adaptador para implementar en entornos serverless (AWS Lambda, etc.).
-- **Uvicorn**: Servidor ASGI rápido y liviano para ejecutar la API.
-- **Dotenv**: Manejo de variables de entorno para configuración segura.
+## ✨ Características
 
-## 📡 Endpoints
+- 🔄 Conversión de audio a texto con alta precisión
+- 🚀 API rápida y eficiente con FastAPI
+- 🌍 Soporte CORS para integraciones con aplicaciones web
+- 🔒 Manejo seguro de archivos de audio
+- ☁️ Compatible con despliegue serverless (AWS Lambda)
 
-### 1. 🌐 Root (`/`)
-**Método**: `GET`  
-**Descripción**: Punto de control de estado. Útil para verificar que el servicio está en funcionamiento.  
+## 🧰 Tecnologías Utilizadas
+
+- **FastAPI**: Framework web de alto rendimiento
+- **OpenAI Whisper**: Modelo avanzado de reconocimiento de voz
+- **Mangum**: Adaptador para facilitar el despliegue en AWS Lambda
+- **Python-dotenv**: Gestión de variables de entorno
+- **CORS Middleware**: Para permitir solicitudes de diferentes orígenes
+
+## 📋 Requisitos Previos
+
+- Python 3.8 o superior
+- Cuenta en OpenAI con API Key
+- Pip (gestor de paquetes de Python)
+
+## 🚀 Instalación
+
+1. **Clonar el repositorio**
+
+```bash
+git clone https://github.com/tu-usuario/convertidor-audio-texto.git
+cd convertidor-audio-texto
+```
+
+2. **Crear un entorno virtual**
+
+```bash
+python -m venv venv
+```
+
+3. **Activar el entorno virtual**
+
+En Windows:
+```bash
+venv\Scripts\activate
+```
+
+En macOS/Linux:
+```bash
+source venv/bin/activate
+```
+
+4. **Instalar dependencias**
+
+```bash
+pip install -r requirements.txt
+```
+
+5. **Configurar variables de entorno**
+
+Crea un archivo `.env.dev` en la raíz del proyecto con el siguiente contenido:
+
+```
+OPENAI.API_KEY=tu_api_key_de_openai
+```
+
+## 🔧 Uso
+
+### Iniciar el servidor localmente
+
+```bash
+uvicorn main:app --reload
+```
+
+El servidor estará disponible en `http://localhost:8000`
+
+### Endpoints
+
+#### GET /
+
+Endpoint de prueba para verificar que el servicio está funcionando.
+
 **Respuesta**:
 ```json
 {
-    "hello ✔": "Audio to text converter"
+  "hello ✔": "Audio to text converter"
 }
 ```
-# 🎧 Funnelchat: Audio to Text Converter API
 
-## 📋 Descripción
-**Funnelchat Audio to Text Converter** es un servicio basado en FastAPI que convierte archivos de audio en texto utilizando el modelo **Whisper** de OpenAI. Permite subir archivos de audio y obtener la transcripción en formato JSON. Además, está listo para integrarse en proyectos frontend con soporte CORS para solicitudes desde cualquier origen.
+#### POST /audio
 
-## 🚀 Funcionalidades
-- 🎙️ **Conversión de Audio a Texto**: Sube un archivo de audio y obtén su transcripción en texto utilizando la IA de OpenAI.
-- 🔒 **Soporte CORS**: Permite hacer solicitudes desde cualquier frontend (Angular, React, Vue, etc.).
-- 🧑‍💻 **Integración con Postman**: Colección de ejemplos listos para probar con Postman.
-- 🔐 **Variables de Entorno**: Las claves de API y configuraciones sensibles se manejan de manera segura mediante archivos de entorno (`.env`).
+Convierte un archivo de audio a texto.
 
-## 🛠️ Tecnologías Utilizadas
-- **FastAPI**: Framework web para crear APIs de alto rendimiento.
-- **OpenAI Whisper**: Modelo de IA para la transcripción de audio a texto.
-- **Mangum**: Adaptador para implementar en entornos serverless (AWS Lambda, etc.).
-- **Uvicorn**: Servidor ASGI rápido y liviano para ejecutar la API.
-- **Dotenv**: Manejo de variables de entorno para configuración segura.
+**Parámetros**:
+- `audio`: Archivo de audio (máximo 5MB)
 
-## 📡 Endpoints
+**Ejemplo de solicitud usando curl**:
+```bash
+curl -X POST "http://localhost:8000/audio" \
+  -H "accept: application/json" \
+  -H "Content-Type: multipart/form-data" \
+  -F "audio=@tu_archivo_audio.mp3"
+```
 
-### 1. 🌐 Root (`/`)
-**Método**: `GET`  
-**Descripción**: Punto de control de estado. Útil para verificar que el servicio está en funcionamiento.  
-**Respuesta**:
+**Respuesta exitosa**:
 ```json
 {
-    "hello ✔": "Audio to text converter"
+  "text": "Texto transcrito del audio...",
+  "status": 200
 }
 ```
 
-### 2. 🎤 Audio (/audio)
-Método: POST
-**Descripción: Sube un archivo de audio y recibe la transcripción del contenido en texto.
-Parámetros:
+### Documentación de la API
 
-audio (archivo): El archivo de audio a transcribir. El tamaño máximo permitido es de 5MB.
+FastAPI genera automáticamente la documentación de la API. Puedes acceder a:
+
+- Swagger UI: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
+
+## 🔍 Limitaciones
+
+- Tamaño máximo de archivo de audio: 5MB
+- Formatos de audio soportados: MP3, M4A, WAV, MPG, MPEG, WEBM
+
+## 🚀 Despliegue
+
+Este proyecto está diseñado para ser desplegado fácilmente en AWS Lambda gracias a Mangum.
+
+### Pasos para el despliegue en AWS Lambda
+
+1. **Empaquetar la aplicación**
+   Asegúrate de incluir todas las dependencias en tu paquete de despliegue.
+
+2. **Configurar un API Gateway**
+   Configura un API Gateway en AWS para exponer tu función Lambda.
+
+3. **Configurar variables de entorno**
+   Define la variable `OPENAI.API_KEY` en la configuración de AWS Lambda.
+
+4. **Definir el handler**
+   En la configuración de AWS Lambda, establece el handler como `main.handler`.
+
+## 🧪 Testing
+
+Para ejecutar las pruebas (si están disponibles):
+
+```bash
+pytest
+```
+
+## 🛠️ Estructura del Proyecto
 
 ```
-curl -X POST "http://127.0.0.1:8000/audio" -F "audio=@ruta/al/audio.ogg"
-
-Ejemplo de solicitud usando form-data en Postman:
-
-Selecciona el método POST.
-En el cuerpo de la solicitud, elige la opción form-data.
-Agrega una clave llamada audio y selecciona el archivo de audio en el campo de valor.
-Envía la solicitud.
-
+convertidor-audio-texto/
+├── main.py            # Archivo principal con la API
+├── requirements.txt   # Dependencias del proyecto
+├── .env.dev           # Variables de entorno para desarrollo
+└── README.md          # Documentación
 ```
 
-Respuesta:
-```json
+## 📖 Explicación del Código
 
-{
-    "text": "Texto transcrito del archivo de audio.",
-    "status": 200
-}
+### Configuración Inicial
+
+```python
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from typing import Optional
+import openai
+from fastapi.responses import JSONResponse
+from starlette.status import HTTP_200_OK
+import logging
+from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
+import io
+import os
+
+# Carga las variables de entorno del archivo .env.dev
+load_dotenv('.env.dev')
+
+# Configura la API key de OpenAI
+openai.api_key = os.getenv("OPENAI.API_KEY")
 ```
 
-Respuesta en caso de error:
+### Límites de Tamaño
 
-```json
-{
-    "detail": "Debe proporcionar un archivo de audio."
-}
+```python
+# Tamaño máximo permitido en MB
+MAX_AUDIO_SIZE_MB = 5 
+MAX_AUDIO_SIZE_BYTES = MAX_AUDIO_SIZE_MB * 1024 * 1024  # Convertido a bytes
 ```
 
+### Creación de la Aplicación
 
-### 📦 Instalación y Configuración
-## 📋 Requisitos:
-- Python 3.8+
-- FastAPI
-- OpenAI API Key
+```python
+app = FastAPI(
+    title="Convertidor de Audio a Texto",
+    description="API para convertir audio a texto"
+)
 
+# Configura CORS para permitir solicitudes desde cualquier origen
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
 
-## OPENAI_API_KEY=tu_clave_de_openai
+### Endpoints
 
-### 🔧 Dependencias
+```python
+@app.get("/")
+async def root():
+    return {"hello ✔": "Audio to text converter"}
 
-- fastapi==0.99.0
-- mangum==0.14.0
-- uvicorn==0.23.0
-- openai==0.28.0
-- lxml==4.9.0
-- python-dotenv==1.0.1
-- python-multipart==0.0.9
+@app.post("/audio")
+async def chat(audio: Optional[UploadFile] = File(...)):
+    print("recibiendo el nombre del audio... ", audio.filename)
+    if not audio:
+        raise HTTPException(status_code=400, detail="Debe proporcionar un archivo de audio")
+    
+    # Leemos el contenido del archivo de audio
+    audio_content = await audio.read()
+    try:
+        # Creamos un archivo en memoria usando io.BytesIO para simular un archivo
+        audio_file = io.BytesIO(audio_content)
+        audio_file.name = audio.filename
+        
+        # Convertimos el audio a texto utilizando OpenAI
+        response = openai.Audio.transcribe(
+            model="whisper-1",
+            file=audio_file
+        )
+        
+        # Preparamos la respuesta con el texto transcrito y el status code
+        responde = {
+            "text": response['text'],
+            "status": HTTP_200_OK
+        }
+        
+        # Retornamos la respuesta en formato JSON con el status code
+        return JSONResponse(content=responde, status_code=HTTP_200_OK)
+    except Exception as e:
+        logging.error(f"Error durante la transcripción: {e}")
+        raise HTTPException(status_code=500, detail="Error en la transcripción del audio.")
+```
+
+### Configuración para AWS Lambda
+
+```python
+handler = Mangum(app, lifespan="off")
+```
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, sigue estos pasos:
+
+1. Haz un fork del repositorio
+2. Crea una rama para tu función (`git checkout -b feature/nueva-funcionalidad`)
+3. Haz commit de tus cambios (`git commit -m 'Añade nueva funcionalidad'`)
+4. Sube la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+
+## 📞 Contacto
+
+Para cualquier consulta o sugerencia, puedes contactarme a través de:
+
+- GitHub: [tu-usuario](https://github.com/tu-usuario)
+- Email: tu-email@ejemplo.com
+
+---
+
+Desarrollado con ❤️ usando FastAPI y OpenAI Whisper
